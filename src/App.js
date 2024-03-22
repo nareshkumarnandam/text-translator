@@ -1,6 +1,7 @@
 import './App.css'
 import axios from 'axios';
 import React, { useState } from 'react';
+import { languages } from './Languages';
 
 const App = () => {
   const [data, setData] = useState("");
@@ -42,14 +43,14 @@ const App = () => {
       flexDirection:'column'
     }} >
       <h1 style={{margin:'0', padding:'0'}}>Text-Translator</h1>
-      <div style={{
+      <div className='container' style={{
       display:'flex',
       justifyContent:'center',
       gap:'50px',
       padding:'40px',
       width:'100%'
     }} >
-            <div style={{display:'flex', flexDirection:'column', gap:'30px', width:'40%', alignItems:'center' }}>
+            <div className='box1' >
               <select style={{width:'100%', height:'30px', padding:' 0 10px', borderRadius:'10px'}} onChange={(e) => {
                   setSourceLang(e.target.value);
               }} value={sourceLang} >
@@ -59,12 +60,13 @@ const App = () => {
                 <option value='te'>Telugu</option>
                 <option value='ta'>Tamil</option>
                 <option value='ml'>Malayalam</option>
+                <option value='kn'>Kannada</option>
               </select>
-              <textarea style={{width:'100%', height:'300px', padding:'10px', borderRadius:'20px',fontSize:'2rem'}} onChange={(e) => {
+              <textarea  onChange={(e) => {
                 setData(e.target.value);
               }} />
             </div>
-            <div style={{display:'flex', flexDirection:'column', gap:'30px', width:'40%', alignItems:'center'  }}>
+            <div className='box2'>
             <select style={{width:'100%', height:'30px', padding:' 0 10px', borderRadius:'10px'}} onChange={(e) => {
                   setTargetLang(e.target.value);
               }} value={targetLang} >
@@ -74,8 +76,9 @@ const App = () => {
                 <option value='te'>Telugu</option>
                 <option value='ta'>Tamil</option>
                 <option value='ml'>Malayalam</option>
+                <option value='kn'>Kannada</option>
               </select>
-              <textarea style={{width:'100%', height:'300px', padding:'10px', borderRadius:'20px',fontSize:'2rem'}} value={result} />
+              <textarea value={result} />
             </div>
         </div>
         <button onClick={() => {
