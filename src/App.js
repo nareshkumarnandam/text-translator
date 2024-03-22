@@ -4,12 +4,13 @@ import React, { useState } from 'react';
 import { languages } from './Languages';
 
 const App = () => {
-  const [data, setData] = useState("");
+  const [data, setData] = useState("Enter some text...");
   const [result , setResult] = useState("");
   const [sourceLang , setSourceLang] = useState('en');
-  const [targetLang , setTargetLang] = useState('');
+  const [targetLang , setTargetLang] = useState('hi');
  
   async function translator (){
+    console.log("src", sourceLang, "tar", targetLang);
     try{
       const encodedParams = new URLSearchParams();
       encodedParams.append("source_language", sourceLang);
@@ -55,14 +56,21 @@ const App = () => {
                   setSourceLang(e.target.value);
               }} value={sourceLang} >
                 <option value=''>Select a language</option>
-                <option value='en'>English</option>
+                {/* <option value='en'>English</option>
                 <option value='hi'>Hindi</option>
                 <option value='te'>Telugu</option>
                 <option value='ta'>Tamil</option>
                 <option value='ml'>Malayalam</option>
-                <option value='kn'>Kannada</option>
+                <option value='kn'>Kannada</option> */}
+                {
+                  languages.map((langs) => {
+                    return(
+                      <option key={langs.id} value={langs.value}>{langs.lang}</option>
+                    )
+                  })
+                }
               </select>
-              <textarea  onChange={(e) => {
+              <textarea value={data} onChange={(e) => {
                 setData(e.target.value);
               }} />
             </div>
@@ -71,12 +79,13 @@ const App = () => {
                   setTargetLang(e.target.value);
               }} value={targetLang} >
                 <option value=''>Select a language</option>
-                <option value='en'>English</option>
-                <option value='hi'>Hindi</option>
-                <option value='te'>Telugu</option>
-                <option value='ta'>Tamil</option>
-                <option value='ml'>Malayalam</option>
-                <option value='kn'>Kannada</option>
+                {
+                  languages.map((langs) => {
+                    return(
+                      <option key={langs.id} value={langs.value}>{langs.lang}</option>
+                    )
+                  })
+                }
               </select>
               <textarea value={result} />
             </div>
