@@ -1,43 +1,47 @@
-import React, { useState } from 'react';
-import axios from 'axios';
 import './App.css'
+import axios from 'axios';
+import React, { useState } from 'react';
 
 const App = () => {
   const [data, setData] = useState("");
   const [result , setResult] = useState("");
+  const [sourceLang , setSourceLang] = useState('en');
+  const [targetLang , setTargetLang] = useState('');
+ 
   async function translator (){
-    const encodedParams = new URLSearchParams();
-    encodedParams.set('source_language', 'en');
-    encodedParams.set('target_language', 'id');
-    encodedParams.set('text', 'What is your name?');
+    try{
+      const encodedParams = new URLSearchParams();
+      encodedParams.append("source_language", sourceLang);
+      encodedParams.append("target_language", targetLang);
+      encodedParams.append("text", data);
 
-    const options = {
-      method: 'GET',
-      url: 'https://text-translator2.p.rapidapi.com/translate',
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'X-RapidAPI-Key': '1fc473a157mshd3c96db4a129ab4p14befdjsn9436757fdf1d',
-        'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
-      },
-      data: encodedParams,
-    };
-
-    try {
-      const response = await axios.request(options);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
+      const options = {
+        method: "POST",
+        url: "https://text-translator2.p.rapidapi.com/translate",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          "X-RapidAPI-Key": "61fe42194dmsha3e696751cf48edp14633fjsn5dd03c4a1e74",
+          "X-RapidAPI-Host": "text-translator2.p.rapidapi.com",
+        },
+        data: encodedParams,
+      };
+      const res = await axios.request(options);
+      setResult(res.data.data.translatedText)
+      console.log(res);
+    }catch (error) {
+      console.log(error);
     }
   }
-
+  // 1fc473a157mshd3c96db4a129ab4p14befdjsn9436757fdf1d
   return (
     <div className="App"  style={{
       display:'flex',
       alignItems:'center',
-      gap:'50px',
-      padding:'40px',
+      gap:'20px',
+      padding:'20px',
       flexDirection:'column'
     }} >
+      <h1 style={{margin:'0', padding:'0'}}>Text-Translator</h1>
       <div style={{
       display:'flex',
       justifyContent:'center',
@@ -45,21 +49,47 @@ const App = () => {
       padding:'40px',
       width:'100%'
     }} >
-            <div style={{display:'flex', flexDirection:'column', gap:'30px', width:'40%' }}>
-              <select style={{width:'100%', height:'30px'}}></select>
-              <textarea style={{width:'100%', height:'300px'}} />
-            </div>
-            <div style={{display:'flex', flexDirection:'column', gap:'30px', width:'40%'  }}>
-              <select style={{width:'100%', height:'30px'}}>
-
+            <div style={{display:'flex', flexDirection:'column', gap:'30px', width:'40%', alignItems:'center' }}>
+              <select style={{width:'100%', height:'30px', padding:' 0 10px', borderRadius:'10px'}} onChange={(e) => {
+                  setSourceLang(e.target.value);
+              }} value={sourceLang} >
+                <option value=''>Select a language</option>
+                <option value='en'>English</option>
+                <option value='hi'>Hindi</option>
+                <option value='te'>Telugu</option>
+                <option value='ta'>Tamil</option>
+                <option value='ml'>Malayalam</option>
               </select>
-              <textarea style={{width:'100%', height:'300px'}} />
+              <textarea style={{width:'100%', height:'300px', padding:'10px', borderRadius:'20px',fontSize:'2rem'}} onChange={(e) => {
+                setData(e.target.value);
+              }} />
+            </div>
+            <div style={{display:'flex', flexDirection:'column', gap:'30px', width:'40%', alignItems:'center'  }}>
+            <select style={{width:'100%', height:'30px', padding:' 0 10px', borderRadius:'10px'}} onChange={(e) => {
+                  setTargetLang(e.target.value);
+              }} value={targetLang} >
+                <option value=''>Select a language</option>
+                <option value='en'>English</option>
+                <option value='hi'>Hindi</option>
+                <option value='te'>Telugu</option>
+                <option value='ta'>Tamil</option>
+                <option value='ml'>Malayalam</option>
+              </select>
+              <textarea style={{width:'100%', height:'300px', padding:'10px', borderRadius:'20px',fontSize:'2rem'}} value={result} />
             </div>
         </div>
         <button onClick={() => {
           translator()
-        }} style={{width:'120px'}} >Translate</button>
+        }} style={{width:'120px', height:'40px', border:'none', borderRadius:'12px', cursor:'pointer', color:'white' }} >Translate</button>
     </div>
+
+    // <div>
+    //   <input onChange={(e) => {
+    //       setData(e.target.value);
+    //   }} />
+    //   <button onClick={translator}>click</button>
+    //   <div>{result}</div>
+    // </div>
   )
 }
 
